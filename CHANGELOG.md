@@ -1,5 +1,13 @@
 # deric-beegfs Changelog
 
+## Release 0.5.0
+
+- add Puppet types [#14](https://github.com/deric/puppet-beegfs/pull/14)
+- add BeeGFS 7 support with templates copied from a clean install (to expose all options) [#14](https://github.com/deric/puppet-beegfs/pull/14)
+- add support for setting up admon [#14](https://github.com/deric/puppet-beegfs/pull/14)
+- add Yum repo and RPM install [#14](https://github.com/deric/puppet-beegfs/pull/14)
+- [Full changes to previous release](https://github.com/deric/puppet-beegfs/compare/v0.4.1...v0.5.0)
+
 ## 2018-01-16 Release 0.4.1
 
 - Add switch to enable quota support [#12](https://github.com/deric/puppet-beegfs/pull/12)
