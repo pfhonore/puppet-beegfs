@@ -84,6 +84,17 @@ describe 'beegfs::client' do
       'mode'    => '0644',
     })
     end
+
+    it {
+      is_expected.to contain_apt__source('beegfs').with(
+        'location' => "http://www.beegfs.io/release/beegfs_7_1",
+        'repos'    => 'non-free',
+        'release'  => 'deb9',
+        'key'      => { 'id' => '055D000F1A9A092763B1F0DD14E8E08064497785', 'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs'},
+        'include'  => { 'src' => false, 'deb' => true }
+      )
+    }
+
   end
 
   context 'on debian-like system' do

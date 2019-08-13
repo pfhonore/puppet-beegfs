@@ -23,6 +23,10 @@ RSpec.configure do |c|
       if ['RedHat'].include?(fact('osfamily'))
         on host, 'yum install -y tar'
       end
+      if ['Debian'].include?(fact('osfamily'))
+        on host, 'apt-get update -q && apt-get install -y net-tools'
+      end
+
       # stdlib wil be installed as dependency
       on host, puppet('module','install','puppetlabs-yumrepo_core'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module','install','puppetlabs-apt'), { :acceptable_exit_codes => [0,1] }

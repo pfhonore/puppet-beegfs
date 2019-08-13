@@ -1,0 +1,70 @@
+require 'spec_helper'
+# test client installation on Debian systems
+
+describe 'beegfs::client' do
+  let(:facts) do
+    {
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :architecture => 'amd64',
+        :distro => { :codename => 'stretch' },
+        :release => { :major => '9', :minor => '9', :full => '9.9' },
+      },
+      :puppetversion => Puppet.version,
+    }
+  end
+
+  let(:user) { 'beegfs' }
+  let(:group) { 'beegfs' }
+  let(:release) { '7.1' }
+
+
+
+  context 'install apt repository and all required packages' do
+
+    let(:params) do
+      {
+        :user  => user,
+        :group => group,
+        :release => release,
+      }
+    end
+
+    it {
+      is_expected.to contain_apt__source('beegfs').with(
+        'location' => "http://www.beegfs.io/release/beegfs_7_1",
+        'repos'    => 'non-free',
+        'release'  => 'deb9',
+        'key'      => { 'id' => '055D000F1A9A092763B1F0DD14E8E08064497785', 'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs'},
+        'include'  => { 'src' => false, 'deb' => true }
+      )
+    }
+
+    it do
+      is_expected.to contain_package('beegfs-client').with({
+      'ensure' => 'present'
+    })
+    end
+    it do
+      is_expected.to contain_package('linux-headers-amd64').with({
+      'ensure' => 'present'
+    })
+    end
+    it do
+      is_expected.to contain_package('beegfs-helperd').with({
+      'ensure' => 'present'
+    })
+    end
+    it do
+      is_expected.to contain_package('beegfs-client').with({
+      'ensure' => 'present'
+    })
+    end
+  end
+
+
+end
