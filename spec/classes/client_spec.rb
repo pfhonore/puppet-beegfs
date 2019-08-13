@@ -42,7 +42,7 @@ describe 'beegfs::client' do
           :name => os,
           :architecture => 'amd64',
           :distro => { :codename => codename },
-          :release => { :major => '7', :minor => '1', :full => '7.1' },
+          :release => { :major => '8', :minor => '2', :full => '8.2' },
         },
         :puppetversion => Puppet.version,
       }
@@ -89,7 +89,7 @@ describe 'beegfs::client' do
       is_expected.to contain_apt__source('beegfs').with(
         'location' => "http://www.beegfs.io/release/beegfs_7_1",
         'repos'    => 'non-free',
-        'release'  => 'deb9',
+        'release'  => 'deb8',
         'key'      => { 'id' => '055D000F1A9A092763B1F0DD14E8E08064497785', 'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs'},
         'include'  => { 'src' => false, 'deb' => true }
       )
@@ -101,7 +101,7 @@ describe 'beegfs::client' do
     let(:user) { 'beegfs' }
     let(:group) { 'beegfs' }
 
-    it_behaves_like 'debian_beegfs-client', 'Debian', 'squeeze', 'linux-headers-amd64'
+    it_behaves_like 'debian_beegfs-client', 'Debian', 'stretch', 'linux-headers-amd64'
     it_behaves_like 'debian_beegfs-client', 'Debian', 'wheezy', 'linux-headers-amd64'
     it_behaves_like 'debian_beegfs-client', 'Ubuntu', 'precise', 'linux-headers-generic'
   end
