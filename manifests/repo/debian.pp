@@ -19,7 +19,7 @@ class beegfs::repo::debian (
     $release.regsubst('\.', '_')
   }
 
-  $_os_release = $facts.dig('os', 'release', 'major')
+  $_os_release = $facts.dig('os', 'distro', 'codename')
 
   if $manage_repo {
     case $package_source {
@@ -28,7 +28,7 @@ class beegfs::repo::debian (
           location     => "http://www.beegfs.io/release/beegfs_${_release}",
           repos        => 'non-free',
           architecture => 'amd64',
-          release      => "deb${_os_release}",
+          release      => $_os_release,
           key          => {
             'id'     => '055D000F1A9A092763B1F0DD14E8E08064497785',
             'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs',
