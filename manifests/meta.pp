@@ -24,7 +24,7 @@ class beegfs::meta (
 ) inherits ::beegfs {
 
   package { 'beegfs-meta':
-    ensure => $package_ensure,
+    ensure  => $package_ensure,
     require => Anchor['::beegfs::install::completed'],
   }
 
@@ -36,6 +36,7 @@ class beegfs::meta (
     group   => $group,
     mode    => '0644',
     content => template('beegfs/interfaces.erb'),
+    require => Package['beegfs-meta'],
   }
 
   file { '/etc/beegfs/beegfs-meta.conf':
@@ -55,7 +56,7 @@ class beegfs::meta (
     enable     => $enable,
     hasstatus  => true,
     hasrestart => true,
-    require    => Package['beegfs-meta'],
+    require    => File['/etc/beegfs/beegfs-meta.conf'],
     subscribe  => [
       File['/etc/beegfs/beegfs-meta.conf'],
       File[$interfaces_file]

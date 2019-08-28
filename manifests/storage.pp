@@ -30,7 +30,7 @@ class beegfs::storage (
   }
 
   package { 'beegfs-storage':
-    ensure => $package_ensure,
+    ensure  => $package_ensure,
     require => Anchor['::beegfs::install::completed'],
   }
 
@@ -40,6 +40,7 @@ class beegfs::storage (
     group   => $group,
     mode    => '0644',
     content => template('beegfs/interfaces.erb'),
+    require => Package['beegfs-storage']
   }
 
   file { '/etc/beegfs/beegfs-storage.conf':

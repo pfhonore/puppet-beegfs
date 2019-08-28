@@ -1,16 +1,26 @@
 require 'spec_helper_acceptance'
 
-describe 'beegfs class' do
+describe 'beegfs meta' do
   context 'default parameters' do
     # Using puppet_apply as a helper
     it 'should work idempotently with no errors' do
       pp = <<-EOS
+      class { '::beegfs':
+        release           => '7.1',
+        allow_new_servers => true,
+      }
       class { 'beegfs::mgmtd': }
+      -> class { '::beegfs::meta':
+        mgmtd_host => '127.0.0.1'
+      }
       EOS
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes  => true)
+      expect(apply_manifest(pp,
+        :catch_failures => false,
+        :debug => true
+      ).exit_code).to be_zero
+      #apply_manifest(pp, :catch_changes  => true)
     end
 
     describe package('beegfs-mgmtd') do
@@ -20,6 +30,16 @@ describe 'beegfs class' do
     describe service('beegfs-mgmtd') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
+    end
+
+
+    describe package('beegfs-meta') do
+    #  it { is_expected.to be_installed }
+    end
+
+    describe service('beegfs-meta') do
+     # it { is_expected.to be_enabled }
+     # it { is_expected.to be_running }
     end
 
     describe user('beegfs') do
