@@ -1,4 +1,4 @@
-# Class: beegfs::repo::debian
+# Manages APT repositories for Debian distros
 
 class beegfs::repo::debian (
   Boolean         $manage_repo    = true,
@@ -19,7 +19,17 @@ class beegfs::repo::debian (
     $release.regsubst('\.', '_')
   }
 
-  $_os_release = $facts.dig('os', 'distro', 'codename')
+  case $release {
+    '2015.03','6': {
+      # 'deb8', 'deb9', etc.
+      $major = $facts.dig('os', 'release', 'major')
+      $_os_release = "deb${major}"
+    }
+    # '7' onwards uses traditional Debian codename
+    default: {
+      $_os_release = $facts.dig('os', 'distro', 'codename')
+    }
+  }
 
   if $manage_repo {
     case $package_source {
