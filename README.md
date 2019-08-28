@@ -4,9 +4,26 @@
 Forge](http://img.shields.io/puppetforge/v/deric/beegfs.svg)](https://forge.puppetlabs.com/deric/beegfs) [![Build Status](https://travis-ci.org/deric/puppet-beegfs.svg?branch=master)](https://travis-ci.org/deric/puppet-beegfs) [![Puppet Forge
 Downloads](http://img.shields.io/puppetforge/dt/deric/beegfs.svg)](https://forge.puppetlabs.com/deric/beegfs/scores)
 
+## Upgrade from `deric-beegfs` version `0.4.x` to `0.5.x`
+
+- `beegfs::storage_directory` expects an Array instead of just String
+- parameter `beegfs::major_version` renamed to `beegfs::release`
+
+
 ## Usage
 
-You need one mgmtd server:
+First of all choose which release to use, by defining:
+```yaml
+beegfs::release: '6'
+```
+valid values are:
+
+- `'2015.03'`
+- `'6'`
+- `'7'`
+- `'7.1'`
+
+You'll need one mgmtd server:
 
 ```puppet
 class { 'beegfs::mgmtd': }

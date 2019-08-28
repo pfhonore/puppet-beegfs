@@ -2,6 +2,13 @@
 
 ## Release 0.5.0
 
+### Breaking Changes
+
+- `beegfs::storage_directory` expects an Array instead of just String
+- parameter `beegfs::major_version` renamed to `beegfs::release`
+
+### Changes
+
 - add Puppet types [#14](https://github.com/deric/puppet-beegfs/pull/14)
 - add BeeGFS 7 support with templates copied from a clean install (to expose all options) [#14](https://github.com/deric/puppet-beegfs/pull/14)
 - add support for setting up admon [#14](https://github.com/deric/puppet-beegfs/pull/14)
