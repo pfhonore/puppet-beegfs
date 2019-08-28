@@ -24,7 +24,6 @@ describe 'beegfs::meta' do
     {
     :user  => user,
     :group => group,
-    :release => '7.1',
   }
   end
 
@@ -47,6 +46,13 @@ describe 'beegfs::meta' do
         :puppetversion => Puppet.version,
       }
     end
+    let :pre_condition do
+      "class {'beegfs':
+         release => '6',
+       }"
+    end
+
+
     it { is_expected.to contain_package('beegfs-meta') }
     it { is_expected.to contain_package('beegfs-utils') }
 
@@ -79,11 +85,16 @@ describe 'beegfs::meta' do
 
   shared_examples 'beegfs-version' do |release|
 
+    let :pre_condition do
+      "class {'beegfs':
+         release => '#{release}',
+       }"
+    end
+
     context 'allow changing parameters' do
       let(:params) do
         {
         :mgmtd_host => '192.168.1.1',
-        :release => release,
       }
       end
 
@@ -113,9 +124,8 @@ describe 'beegfs::meta' do
       let(:version) { '2015.03.r8.debian7' }
       let(:params) do
         {
-        :package_ensure => version,
-        :release => release,
-      }
+          package_ensure: version,
+        }
       end
 
       it do
@@ -141,7 +151,6 @@ describe 'beegfs::meta' do
         :interfaces_file => '/etc/beegfs/meta.itf',
         :user            => user,
         :group           => group,
-        :release   => release,
       }
       end
 
@@ -171,9 +180,8 @@ describe 'beegfs::meta' do
     context 'changing log level' do
       let(:params) do
         {
-        :log_level => 5,
-        :release => release,
-      }
+          log_level: 5,
+        }
       end
 
       it do
@@ -186,9 +194,8 @@ describe 'beegfs::meta' do
     context 'hiera should override defaults' do
       let(:params) do
         {
-        :mgmtd_host => '192.168.1.1',
-        :release => release,
-      }
+          mgmtd_host: '192.168.1.1',
+        }
       end
 
       it do
@@ -201,9 +208,8 @@ describe 'beegfs::meta' do
     context 'disable first run init' do
       let(:params) do
         {
-        :allow_first_run_init => false,
-        :release => release,
-      }
+          :allow_first_run_init => false,
+        }
       end
 
       it do
@@ -220,10 +226,10 @@ describe 'beegfs::meta' do
   end
 
   context 'beegfs 6 uses different apt source naming' do
-    let(:params) do
-      {
-        release: '6',
-      }
+    let :pre_condition do
+      'class {"beegfs":
+         release => "6",
+       }'
     end
 
     it { is_expected.to contain_package('beegfs-meta') }

@@ -27,8 +27,13 @@ describe 'beegfs::storage' do
     {
     'user'  => user,
     'group' => group,
-    :release => '2015.03',
   }
+  end
+
+  let :pre_condition do
+    'class {"beegfs":
+       release => "6",
+     }'
   end
 
   it { is_expected.to contain_class('beegfs::storage') }
@@ -91,7 +96,6 @@ describe 'beegfs::storage' do
       {
       'user'  => user,
       'group' => group,
-      :release => '2015.03',
       :storage_directory => ['/srv/beefgs/storage'],
     }
     end
@@ -109,9 +113,14 @@ describe 'beegfs::storage' do
     {
       'user'  => user,
       'group' => group,
-      :release => release,
       :storage_directory => ['/srv/beefgs/storage'],
     }
+    end
+
+    let :pre_condition do
+      "class {'beegfs':
+         release => '#{release}',
+       }"
     end
 
     context 'with given version' do
@@ -119,7 +128,6 @@ describe 'beegfs::storage' do
       let(:params) do
         {
         :package_ensure => version,
-        :release  => release,
       }
       end
 
@@ -146,7 +154,6 @@ describe 'beegfs::storage' do
         :interfaces_file => '/etc/beegfs/store.itf',
         :user            => user,
         :group           => group,
-        :release   => release,
       }
       end
 
@@ -176,9 +183,8 @@ describe 'beegfs::storage' do
     context 'changing log level' do
       let(:params) do
         {
-        :log_level => 5,
-        :release => release,
-      }
+          log_level: 5,
+        }
       end
 
       it do
@@ -191,9 +197,8 @@ describe 'beegfs::storage' do
     context 'set mgmtd host' do
       let(:params) do
         {
-        :mgmtd_host => 'mgmtd.beegfs.com',
-        :release => release,
-      }
+          mgmtd_host: 'mgmtd.beegfs.com',
+        }
       end
 
       it do
@@ -206,9 +211,8 @@ describe 'beegfs::storage' do
     context 'set mgmtd tcp port' do
       let(:params) do
         {
-        :mgmtd_tcp_port => 9009,
-        :release  => release,
-      }
+          mgmtd_tcp_port: 9009,
+        }
       end
 
       it do
@@ -222,7 +226,6 @@ describe 'beegfs::storage' do
       let(:params) do
         {
         :storage_directory => ['/var/storage1','/var/storage2'],
-        :release => release,
         :user => user,
         :group => group,
       }
@@ -255,7 +258,6 @@ describe 'beegfs::storage' do
       let(:params) do
         {
         :allow_first_run_init => false,
-        :release => release,
       }
       end
 
@@ -273,10 +275,10 @@ describe 'beegfs::storage' do
   end
 
   context 'beegfs 6 uses different apt source naming' do
-    let(:params) do
-      {
-        release: '6',
-      }
+    let :pre_condition do
+      'class {"beegfs":
+         release => "6",
+       }'
     end
 
     it { is_expected.to contain_package('beegfs-storage') }

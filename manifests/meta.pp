@@ -15,7 +15,6 @@ class beegfs::meta (
   $package_ensure                            = lookup('beegfs::package_ensure', String, undef, $beegfs::package_ensure),
   Array[String]        $interfaces           = ['eth0'],
   Stdlib::AbsolutePath $interfaces_file      = '/etc/beegfs/interfaces.meta',
-  Beegfs::Release      $release              = $beegfs::release,
   Boolean              $enable_acl           = $beegfs::enable_acl,
   Stdlib::Port         $meta_tcp_port        = $beegfs::meta_tcp_port,
   Stdlib::Port         $meta_udp_port        = $beegfs::meta_udp_port,
@@ -24,20 +23,12 @@ class beegfs::meta (
 
 ) inherits ::beegfs {
 
-  # release variable needs to be propagated in case common `beegfs::release`
-  # is overriden
-  class {'::beegfs::install':
-    release => $release,
-    user    => $user,
-    group   => $group,
-    log_dir => $log_dir,
-  }
-
   package { 'beegfs-meta':
     ensure => $package_ensure,
+    require => Anchor['::beegfs::install::completed'],
   }
 
-  $_release_major = beegfs::release_to_major($release)
+  $_release_major = beegfs::release_to_major($beegfs::release)
 
   file { $interfaces_file:
     ensure  => present,

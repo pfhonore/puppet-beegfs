@@ -17,7 +17,6 @@ class beegfs::client (
   Stdlib::Port            $helperd_tcp_port         = $beegfs::helperd_tcp_port,
   Stdlib::Port            $mgmtd_tcp_port           = $beegfs::mgmtd_tcp_port,
   Stdlib::Port            $mgmtd_udp_port           = $beegfs::mgmtd_udp_port,
-  Beegfs::Release         $release                  = $beegfs::release,
   Array[String]           $kernel_packages          = $beegfs::params::kernel_packages,
   Boolean                 $autobuild                = true,
   String                  $autobuild_args           = '-j8',
@@ -25,15 +24,6 @@ class beegfs::client (
   Boolean                 $enable_quota             = $beegfs::enable_quota,
   Boolean                 $enable_acl               = $beegfs::enable_acl,
 ) inherits beegfs {
-
-  # release variable needs to be propagated in case common `beegfs::release`
-  # is overriden
-  class {'::beegfs::install':
-    release => $release,
-    user    => $user,
-    group   => $group,
-    log_dir => $log_dir,
-  }
 
   anchor { 'beegfs::kernel_dev' : }
 
@@ -43,7 +33,7 @@ class beegfs::client (
     }
   )
 
-  $_release_major = beegfs::release_to_major($release)
+  $_release_major = beegfs::release_to_major($beegfs::release)
 
   file { '/etc/beegfs/beegfs-helperd.conf':
     ensure  => present,

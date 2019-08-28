@@ -20,7 +20,6 @@ class beegfs::mgmtd (
   $package_ensure                                     = $beegfs::package_ensure,
   Array[String]        $interfaces                    = ['eth0'],
   Stdlib::AbsolutePath $interfaces_file               = '/etc/beegfs/interfaces.mgmtd',
-  Beegfs::Release      $release                       = $beegfs::release,
   Boolean              $enable_quota                  = $beegfs::enable_quota,
   Boolean              $allow_new_servers             = $beegfs::allow_new_servers,
   Boolean              $allow_new_targets             = $beegfs::allow_new_targets,
@@ -28,19 +27,11 @@ class beegfs::mgmtd (
   Stdlib::Port         $mgmtd_udp_port                = $beegfs::mgmtd_udp_port,
 ) inherits ::beegfs {
 
-  # release variable needs to be propagated in case common `beegfs::release`
-  # is overriden
-  class {'::beegfs::install':
-    release => $release,
-    user    => $user,
-    group   => $group,
-    log_dir => $log_dir,
-  }
-
-  $_release_major = beegfs::release_to_major($release)
+  $_release_major = beegfs::release_to_major($beegfs::release)
 
   package { 'beegfs-mgmtd':
-    ensure => $package_ensure,
+    ensure  => $package_ensure,
+    require => Anchor['::beegfs::install::completed'],
   }
 
   # mgmtd main directory
@@ -57,6 +48,7 @@ class beegfs::mgmtd (
     group   => $group,
     mode    => '0644',
     content => template('beegfs/interfaces.erb'),
+    require => Package['beegfs-mgmtd'],
   }
 
   file { '/etc/beegfs/beegfs-mgmtd.conf':

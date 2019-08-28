@@ -9,6 +9,7 @@
 
 ### Changes
 
+- `beegfs::release` can be defined only globally (not for each subclass like `beegfs::meta`,`beegfs::storage`) - we're using shared repository major release can't be different
 - add Puppet types [#14](https://github.com/deric/puppet-beegfs/pull/14)
 - add BeeGFS 7 support with templates copied from a clean install (to expose all options) [#14](https://github.com/deric/puppet-beegfs/pull/14)
 - add support for setting up admon [#14](https://github.com/deric/puppet-beegfs/pull/14)

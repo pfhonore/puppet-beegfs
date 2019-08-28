@@ -25,7 +25,6 @@ describe 'beegfs::client' do
     {
     :user  => user,
     :group => group,
-    :release => release,
     }
   end
 
@@ -46,6 +45,12 @@ describe 'beegfs::client' do
         },
         :puppetversion => Puppet.version,
       }
+    end
+
+    let :pre_condition do
+      "class {'beegfs':
+         release => '2015.03',
+       }"
     end
 
     it { is_expected.to contain_package('beegfs-client') }
@@ -307,10 +312,10 @@ describe 'beegfs::client' do
   end
 
   context 'beegfs 6 uses different apt source naming' do
-    let(:params) do
-      {
-        release: '6',
-      }
+    let :pre_condition do
+      'class {"beegfs":
+         release => "6",
+       }'
     end
 
     it { is_expected.to contain_package('beegfs-client') }

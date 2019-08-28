@@ -28,8 +28,13 @@ describe 'beegfs::client' do
       {
         :user  => user,
         :group => group,
-        :release => release,
       }
+    end
+
+    let :pre_condition do
+      "class {'beegfs':
+         release => '#{release}',
+       }"
     end
 
     it {

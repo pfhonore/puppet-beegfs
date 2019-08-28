@@ -24,7 +24,6 @@ describe 'beegfs::mgmtd' do
     {
     :user  => user,
     :group => group,
-    :release => '2015.03',
   }
   end
 
@@ -47,10 +46,15 @@ describe 'beegfs::mgmtd' do
 
     let(:params) do
       {
-      :user  => user,
-      :group => group,
-      :release => '2015.03',
-    }
+        user: user,
+        group: group,
+      }
+    end
+
+    let :pre_condition do
+      'class {"beegfs":
+         release => "2015.03",
+       }'
     end
     it { is_expected.to contain_package('beegfs-mgmtd') }
     it { is_expected.to contain_package('beegfs-utils') }
@@ -77,8 +81,13 @@ describe 'beegfs::mgmtd' do
       :package_ensure => version,
       :user           => user,
       :group          => group,
-      :release => '2015.03',
     }
+    end
+
+    let :pre_condition do
+      'class {"beegfs":
+         release => "2015.03",
+       }'
     end
 
     it do
@@ -99,13 +108,18 @@ describe 'beegfs::mgmtd' do
 
   context 'interfaces file' do
     let(:params) do
-      {
+    {
       :interfaces      => ['eth0', 'ib0'],
       :interfaces_file => '/etc/beegfs/mgmtd.itf',
       :user            => user,
       :group           => group,
-      :release   => '2015.03',
     }
+    end
+
+    let :pre_condition do
+      "class {'beegfs':
+         release => '2015.03',
+       }"
     end
 
     it do
@@ -134,9 +148,8 @@ describe 'beegfs::mgmtd' do
   context 'changing log level' do
     let(:params) do
       {
-      :log_level => 5,
-      :release => '2015.03',
-    }
+        log_level: 5,
+      }
     end
 
     it do
@@ -146,13 +159,12 @@ describe 'beegfs::mgmtd' do
     end
   end
 
-    context 'beegfs 6 uses different apt source naming' do
-    let(:params) do
-      {
-        release: '6',
-      }
+  context 'beegfs 6 uses different apt source naming' do
+    let :pre_condition do
+      'class {"beegfs":
+         release => "6",
+       }'
     end
-
     it { is_expected.to contain_package('beegfs-mgmtd') }
 
     it {

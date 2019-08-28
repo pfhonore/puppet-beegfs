@@ -17,20 +17,10 @@ class beegfs::storage (
   Stdlib::AbsolutePath        $interfaces_file      = '/etc/beegfs/interfaces.storage',
   Stdlib::Port                $mgmtd_tcp_port       = 8008,
   Stdlib::Port                $mgmtd_udp_port       = 8008,
-  Beegfs::Release             $release              = $beegfs::release,
   Boolean                     $enable_quota         = $beegfs::enable_quota,
 ) inherits ::beegfs {
 
-  # release variable needs to be propagated in case common `beegfs::release`
-  # is overriden
-  class {'::beegfs::install':
-    release => $release,
-    user    => $user,
-    group   => $group,
-    log_dir => $log_dir,
-  }
-
-  $_release_major = beegfs::release_to_major($release)
+  $_release_major = beegfs::release_to_major($beegfs::release)
 
   file { $storage_directory:
     ensure => directory,
@@ -41,6 +31,7 @@ class beegfs::storage (
 
   package { 'beegfs-storage':
     ensure => $package_ensure,
+    require => Anchor['::beegfs::install::completed'],
   }
 
   file { $interfaces_file:

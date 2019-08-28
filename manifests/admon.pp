@@ -20,7 +20,6 @@ class beegfs::admon (
   Stdlib::Port         $helperd_tcp_port         = $beegfs::helperd_tcp_port,
   Stdlib::Port         $mgmtd_tcp_port           = $beegfs::mgmtd_tcp_port,
   Stdlib::Port         $mgmtd_udp_port           = $beegfs::mgmtd_udp_port,
-  Beegfs::Release      $release                  = $beegfs::release,
   Array[String]        $kernel_packages          = $beegfs::params::kernel_packages,
   Boolean              $autobuild                = true,
   String               $autobuild_args           = '-j8',
@@ -30,19 +29,11 @@ class beegfs::admon (
   Stdlib::AbsolutePath $admon_db_file            = $beegfs::admon_db_file,
 ) inherits beegfs {
 
-  # release variable needs to be propagated in case common `beegfs::release`
-  # is overriden
-  class {'::beegfs::install':
-    release => $release,
-    user    => $user,
-    group   => $group,
-    log_dir => $log_dir,
-  }
-
-  $_release_major = beegfs::release_to_major($release)
+  $_release_major = beegfs::release_to_major($beegfs::release)
 
   package { 'beegfs-admon':
-    ensure => $package_ensure,
+    ensure  => $package_ensure,
+    require => Anchor['::beegfs::install::completed'],
   }
 
   file { $interfaces_file:
