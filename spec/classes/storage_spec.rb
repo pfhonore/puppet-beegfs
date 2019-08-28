@@ -271,4 +271,24 @@ describe 'beegfs::storage' do
     it_behaves_like 'beegfs-version', '2015.03'
     it_behaves_like 'beegfs-version', '6'
   end
+
+  context 'beegfs 6 uses different apt source naming' do
+    let(:params) do
+      {
+        release: '6',
+      }
+    end
+
+    it { is_expected.to contain_package('beegfs-storage') }
+
+    it {
+      is_expected.to contain_apt__source('beegfs').with(
+        'location' => "http://www.beegfs.io/release/beegfs_6",
+        'repos'    => 'non-free',
+        'release'  => 'deb7',
+        'key'      => { 'id' => '055D000F1A9A092763B1F0DD14E8E08064497785', 'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs'},
+        'include'  => { 'src' => false, 'deb' => true }
+      )
+    }
+  end
 end

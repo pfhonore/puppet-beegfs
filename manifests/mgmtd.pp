@@ -28,8 +28,14 @@ class beegfs::mgmtd (
   Stdlib::Port         $mgmtd_udp_port                = $beegfs::mgmtd_udp_port,
 ) inherits ::beegfs {
 
-  require ::beegfs
-  require ::beegfs::install
+  # release variable needs to be propagated in case common `beegfs::release`
+  # is overriden
+  class {'::beegfs::install':
+    release => $release,
+    user    => $user,
+    group   => $group,
+    log_dir => $log_dir,
+  }
 
   $_release_major = beegfs::release_to_major($release)
 

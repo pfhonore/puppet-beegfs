@@ -24,7 +24,14 @@ class beegfs::meta (
 
 ) inherits ::beegfs {
 
-  require ::beegfs::install
+  # release variable needs to be propagated in case common `beegfs::release`
+  # is overriden
+  class {'::beegfs::install':
+    release => $release,
+    user    => $user,
+    group   => $group,
+    log_dir => $log_dir,
+  }
 
   package { 'beegfs-meta':
     ensure => $package_ensure,

@@ -21,7 +21,14 @@ class beegfs::storage (
   Boolean                     $enable_quota         = $beegfs::enable_quota,
 ) inherits ::beegfs {
 
-  require ::beegfs::install
+  # release variable needs to be propagated in case common `beegfs::release`
+  # is overriden
+  class {'::beegfs::install':
+    release => $release,
+    user    => $user,
+    group   => $group,
+    log_dir => $log_dir,
+  }
 
   $_release_major = beegfs::release_to_major($release)
 

@@ -25,7 +25,14 @@ class beegfs::client (
   Boolean                 $enable_acl               = $beegfs::enable_acl,
 ) inherits beegfs {
 
-  require ::beegfs::install
+  # release variable needs to be propagated in case common `beegfs::release`
+  # is overriden
+  class {'::beegfs::install':
+    release => $release,
+    user    => $user,
+    group   => $group,
+    log_dir => $log_dir,
+  }
 
   anchor { 'beegfs::kernel_dev' : }
 

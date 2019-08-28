@@ -57,4 +57,5 @@ describe 'beegfs' do
       it { expect { is_expected.to contain_package('beegfs') }.to raise_error(Puppet::Error, /Nexenta is not supported/) }
     end
   end
+
 end

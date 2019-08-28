@@ -31,7 +31,7 @@ describe 'beegfs::client' do
 
   it { is_expected.to contain_class('beegfs::client') }
 
-  shared_examples 'debian_beegfs-client' do |os, codename, headers|
+  shared_examples 'debian_beegfs-client' do |os, codename, headers, major|
     let(:facts) do
       {
         # still old fact is needed due to this
@@ -42,7 +42,7 @@ describe 'beegfs::client' do
           :name => os,
           :architecture => 'amd64',
           :distro => { :codename => codename },
-          :release => { :major => '8', :minor => '2', :full => '8.2' },
+          :release => { :major => major, :minor => '1', :full => "${major}.1" },
         },
         :puppetversion => Puppet.version,
       }
@@ -87,9 +87,9 @@ describe 'beegfs::client' do
 
     it {
       is_expected.to contain_apt__source('beegfs').with(
-        'location' => "http://www.beegfs.io/release/beegfs_7_1",
+        'location' => "http://www.beegfs.io/release/beegfs_2015.03",
         'repos'    => 'non-free',
-        'release'  => codename,
+        'release'  => "deb#{major}",
         'key'      => { 'id' => '055D000F1A9A092763B1F0DD14E8E08064497785', 'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs'},
         'include'  => { 'src' => false, 'deb' => true }
       )
@@ -101,9 +101,9 @@ describe 'beegfs::client' do
     let(:user) { 'beegfs' }
     let(:group) { 'beegfs' }
 
-    it_behaves_like 'debian_beegfs-client', 'Debian', 'stretch', 'linux-headers-amd64'
-    it_behaves_like 'debian_beegfs-client', 'Debian', 'wheezy', 'linux-headers-amd64'
-    it_behaves_like 'debian_beegfs-client', 'Ubuntu', 'precise', 'linux-headers-generic'
+    it_behaves_like 'debian_beegfs-client', 'Debian', 'stretch', 'linux-headers-amd64', '9'
+    it_behaves_like 'debian_beegfs-client', 'Debian', 'jessie', 'linux-headers-amd64', '8'
+    it_behaves_like 'debian_beegfs-client', 'Debian', 'wheezy', 'linux-headers-amd64', '7'
   end
 
   context 'on RedHat' do
@@ -304,5 +304,25 @@ describe 'beegfs::client' do
         '/etc/beegfs/beegfs-client-autobuild.conf'
       ).with_content(/buildArgs=-j16/)
     end
+  end
+
+  context 'beegfs 6 uses different apt source naming' do
+    let(:params) do
+      {
+        release: '6',
+      }
+    end
+
+    it { is_expected.to contain_package('beegfs-client') }
+
+    it {
+      is_expected.to contain_apt__source('beegfs').with(
+        'location' => "http://www.beegfs.io/release/beegfs_6",
+        'repos'    => 'non-free',
+        'release'  => 'deb7',
+        'key'      => { 'id' => '055D000F1A9A092763B1F0DD14E8E08064497785', 'source' => 'http://www.beegfs.com/release/latest-stable/gpg/DEB-GPG-KEY-beegfs'},
+        'include'  => { 'src' => false, 'deb' => true }
+      )
+    }
   end
 end

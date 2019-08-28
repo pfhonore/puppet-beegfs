@@ -22,8 +22,6 @@ describe 'beegfs::client' do
   let(:group) { 'beegfs' }
   let(:release) { '7.1' }
 
-
-
   context 'install apt repository and all required packages' do
 
     let(:params) do
@@ -65,6 +63,4 @@ describe 'beegfs::client' do
     })
     end
   end
-
-
 end
