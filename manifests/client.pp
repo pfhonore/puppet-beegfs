@@ -11,6 +11,7 @@ class beegfs::client (
   Stdlib::AbsolutePath    $interfaces_file          = '/etc/beegfs/interfaces.client',
   Beegfs::Client::LogType $log_type                 = 'helperd',
   Beegfs::LogLevel        $log_level                = $beegfs::log_level,
+  Beegfs::LogDir          $log_dir                  = $beegfs::log_dir,
   Stdlib::Host            $mgmtd_host               = lookup('beegfs::mgmtd_host', String, undef, $beegfs::mgmtd_host),
   Stdlib::Port            $client_udp_port          = $beegfs::client_udp_port,
   Stdlib::Port            $helperd_tcp_port         = $beegfs::helperd_tcp_port,
