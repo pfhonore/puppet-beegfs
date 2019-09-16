@@ -32,13 +32,13 @@ class beegfs::repo::debian (
         'Ubuntu': {
           case $facts.dig('os', 'release', 'full') {
             '14.04','14.10','15.04','15.10':{
-              $_os_release = "deb8"
+              $_os_release = 'deb8'
             }
             '16.04','16.10','17.04','17.10':{
-              $_os_release = "deb9"
+              $_os_release = 'deb9'
             }
             default: {
-              $_os_release = "deb9"
+              $_os_release = 'deb9'
             }
           }
         }
