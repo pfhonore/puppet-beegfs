@@ -27,7 +27,25 @@ class beegfs::repo::debian (
     }
     # '7' onwards uses traditional Debian codename
     default: {
-      $_os_release = $facts.dig('os', 'distro', 'codename')
+      case $facts.dig('os', 'name') {
+        # https://askubuntu.com/questions/445487/what-debian-version-are-the-different-ubuntu-versions-based-on
+        'Ubuntu': {
+          case $facts.dig('os', 'release', 'full') {
+            '14.04','14.10','15.04','15.10':{
+              $_os_release = "deb8"
+            }
+            '16.04','16.10','17.04','17.10':{
+              $_os_release = "deb9"
+            }
+            default: {
+              $_os_release = "deb9"
+            }
+          }
+        }
+        default: {
+          $_os_release = $facts.dig('os', 'distro', 'codename')
+        }
+      }
     }
   }
 
