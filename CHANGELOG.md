@@ -1,6 +1,6 @@
 # deric-beegfs Changelog
 
-## Release 0.5.0
+## 2019-09-25 Release 0.5.0
 
 ### Breaking Changes
 
