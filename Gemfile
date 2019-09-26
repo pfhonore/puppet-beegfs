@@ -31,7 +31,7 @@ group :development do
   gem "puppet-blacksmith"
   gem "guard-rake"
   # CVE-2017-8418
-  gem "rubocop", ">= 0.49.0"
+  gem "rubocop", ">= 0.70.0"
   gem 'pdk', '>= 1.12'
 end
 

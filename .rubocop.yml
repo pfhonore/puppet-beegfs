@@ -9,7 +9,7 @@ AllCops:
     - 'spec/fixtures/**/*'
     - 'pkg/**/*'
 
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Enabled: true
 
 Lint/ElseLayout:
@@ -27,9 +27,6 @@ Lint/EnsureReturn:
 Lint/HandleExceptions:
   Enabled: true
 
-Lint/LiteralInCondition:
-  Enabled: true
-
 Lint/ShadowingOuterLocalVariable:
   Enabled: true
 
@@ -45,7 +42,7 @@ Lint/AmbiguousOperator:
 Lint/AssignmentInCondition:
   Enabled: true
 
-Style/SpaceBeforeComment:
+Layout/SpaceBeforeComment:
   Enabled: true
 
 # DISABLED - not useful
@@ -201,9 +198,6 @@ Style/TrailingBlankLines:
 Style/SpaceInsideBlockBraces:
   Enabled: false
 
-Style/SpaceInsideBrackets:
-  Enabled: false
-
 Style/SpaceInsideHashLiteralBraces:
   Enabled: false
 
@@ -283,12 +277,6 @@ Style/EachWithObject:
 Style/EmptyLineBetweenDefs:
   Enabled: false
 
-Style/IndentArray:
-  Enabled: false
-
-Style/IndentHash:
-  Enabled: false
-
 Style/IndentationConsistency:
   Enabled: false
 
@@ -307,7 +295,7 @@ Style/EmptyLiteral:
 Metrics/LineLength:
   Enabled: false
 
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Enabled: false
 
 Style/MethodDefParentheses:
@@ -322,7 +310,10 @@ Style/TrailingWhitespace:
 Style/StringLiterals:
   Enabled: false
 
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
   Enabled: false
 
 Style/GlobalVars:
@@ -418,7 +409,7 @@ Style/NumericLiterals:
 Style/OneLineConditional:
   Enabled: false
 
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Enabled: false
 
 Style/ParenthesesAroundCondition:
