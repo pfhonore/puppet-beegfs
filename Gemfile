@@ -32,6 +32,7 @@ group :development do
   gem "guard-rake"
   # CVE-2017-8418
   gem "rubocop", ">= 0.49.0"
+  gem 'pdk', '>= 1.12'
 end
 
 group :system_tests do
