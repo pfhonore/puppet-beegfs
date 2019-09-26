@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'beegfs::storage' do
@@ -25,9 +27,9 @@ describe 'beegfs::storage' do
 
   let(:params) do
     {
-    'user'  => user,
+      'user'  => user,
     'group' => group,
-  }
+    }
   end
 
   let :pre_condition do
@@ -64,20 +66,22 @@ describe 'beegfs::storage' do
     end
 
     it do
-      is_expected.to contain_file('/etc/beegfs/beegfs-storage.conf').with({
-        'ensure'  => 'present',
-        'owner'   => user,
-        'group'   => group,
-        'mode'    => '0644',
-      })
+      is_expected.to contain_file('/etc/beegfs/beegfs-storage.conf')
+        .with(
+          'ensure'  => 'present',
+          'owner'   => user,
+          'group'   => group,
+          'mode'    => '0644'
+        )
     end
 
     it do
-      is_expected.to contain_file('/srv/beefgs/storage').with({
-        'ensure'  => 'directory',
+      is_expected.to contain_file('/srv/beefgs/storage')
+        .with(
+          'ensure'  => 'directory',
         'owner'   => user,
-        'group'   => group,
-      })
+        'group'   => group
+        )
     end
 
     it do
@@ -94,10 +98,10 @@ describe 'beegfs::storage' do
 
     let(:params) do
       {
-      'user'  => user,
-      'group' => group,
-      :storage_directory => ['/srv/beefgs/storage'],
-    }
+        'user'  => user,
+        'group' => group,
+        :storage_directory => ['/srv/beefgs/storage'],
+      }
     end
 
     it_behaves_like 'debian-storage', 'Debian', 'wheezy'
@@ -105,7 +109,6 @@ describe 'beegfs::storage' do
   end
 
   shared_examples 'beegfs-version' do |release|
-
     let(:user) { 'beegfs' }
     let(:group) { 'beegfs' }
 
@@ -127,43 +130,46 @@ describe 'beegfs::storage' do
       let(:version) { '2012.10.r8.debian7' }
       let(:params) do
         {
-        :package_ensure => version,
-      }
+          :package_ensure => version,
+        }
       end
 
       it do
-        is_expected.to contain_package('beegfs-storage').with({
-        'ensure' => version
-      })
+        is_expected.to contain_package('beegfs-storage')
+          .with(
+            'ensure' => version
+          )
       end
     end
 
     it do
-      is_expected.to contain_file('/etc/beegfs/interfaces.storage').with({
-      'ensure'  => 'present',
-      'owner'   => user,
-      'group'   => group,
-      'mode'    => '0644',
-    }).with_content(/eth0/)
+      is_expected.to contain_file('/etc/beegfs/interfaces.storage')
+        .with(
+          'ensure'  => 'present',
+          'owner'   => user,
+          'group'   => group,
+          'mode'    => '0644'
+        ).with_content(/eth0/)
     end
 
     context 'interfaces file' do
       let(:params) do
         {
-        :interfaces      => ['eth0', 'ib0'],
-        :interfaces_file => '/etc/beegfs/store.itf',
-        :user            => user,
-        :group           => group,
-      }
+          :interfaces      => ['eth0', 'ib0'],
+          :interfaces_file => '/etc/beegfs/store.itf',
+          :user            => user,
+          :group           => group,
+        }
       end
 
       it do
-        is_expected.to contain_file('/etc/beegfs/store.itf').with({
-        'ensure'  => 'present',
+        is_expected.to contain_file('/etc/beegfs/store.itf')
+          .with(
+            'ensure'  => 'present',
         'owner'   => user,
         'group'   => group,
-        'mode'    => '0644',
-      }).with_content(/ib0/)
+        'mode'    => '0644'
+          ).with_content(/ib0/)
       end
 
 
@@ -225,10 +231,10 @@ describe 'beegfs::storage' do
     context 'pass storage directory as an array' do
       let(:params) do
         {
-        :storage_directory => ['/var/storage1','/var/storage2'],
-        :user => user,
-        :group => group,
-      }
+          :storage_directory => ['/var/storage1','/var/storage2'],
+          :user => user,
+          :group => group,
+        }
       end
 
       it do
@@ -238,27 +244,29 @@ describe 'beegfs::storage' do
       end
 
       it do
-        is_expected.to contain_file('/var/storage1').with({
-          'ensure'  => 'directory',
-          'owner'   => user,
-          'group'   => group,
-        })
+        is_expected.to contain_file('/var/storage1')
+          .with(
+            'ensure'  => 'directory',
+            'owner'   => user,
+            'group'   => group
+          )
       end
 
       it do
-        is_expected.to contain_file('/var/storage2').with({
-          'ensure'  => 'directory',
-          'owner'   => user,
-          'group'   => group,
-        })
+        is_expected.to contain_file('/var/storage2')
+          .with(
+            'ensure'  => 'directory',
+            'owner'   => user,
+            'group'   => group
+          )
       end
     end
 
     context 'disable first run init' do
       let(:params) do
         {
-        :allow_first_run_init => false,
-      }
+          :allow_first_run_init => false,
+        }
       end
 
       it do

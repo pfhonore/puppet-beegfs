@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'beegfs meta' do
@@ -17,9 +19,8 @@ describe 'beegfs meta' do
 
       # Run it twice and test for idempotency
       expect(apply_manifest(pp,
-        :catch_failures => false,
-        :debug => true
-      ).exit_code).to be_zero
+                            :catch_failures => false,
+                            :debug => true).exit_code).to be_zero
       #apply_manifest(pp, :catch_changes  => true)
     end
 

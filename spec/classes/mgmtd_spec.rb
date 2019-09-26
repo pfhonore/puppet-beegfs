@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'beegfs::mgmtd' do
@@ -22,9 +24,9 @@ describe 'beegfs::mgmtd' do
 
   let(:params) do
     {
-    :user  => user,
-    :group => group,
-  }
+      :user  => user,
+      :group => group,
+    }
   end
 
   shared_examples 'debian-mgmtd' do |os, codename|
@@ -78,10 +80,10 @@ describe 'beegfs::mgmtd' do
     let(:version) { '2012.10.r8.debian7' }
     let(:params) do
       {
-      :package_ensure => version,
-      :user           => user,
-      :group          => group,
-    }
+        :package_ensure => version,
+        :user           => user,
+        :group          => group,
+      }
     end
 
     let :pre_condition do
@@ -91,19 +93,21 @@ describe 'beegfs::mgmtd' do
     end
 
     it do
-      should contain_package('beegfs-mgmtd').with({
-      'ensure' => version
-    })
+      should contain_package('beegfs-mgmtd')
+        .with(
+          'ensure' => version
+        )
     end
   end
 
   it do
-    should contain_file('/etc/beegfs/interfaces.mgmtd').with({
-    'ensure'  => 'present',
+    should contain_file('/etc/beegfs/interfaces.mgmtd')
+      .with(
+        'ensure'  => 'present',
     'owner'   => user,
     'group'   => group,
-    'mode'    => '0644',
-  }).with_content(/eth0/)
+    'mode'    => '0644'
+      ).with_content(/eth0/)
   end
 
   context 'interfaces file' do
@@ -123,12 +127,13 @@ describe 'beegfs::mgmtd' do
     end
 
     it do
-      should contain_file('/etc/beegfs/mgmtd.itf').with({
-      'ensure'  => 'present',
-      'owner'   => user,
-      'group'   => group,
-      'mode'    => '0644',
-    }).with_content(/ib0/)
+      should contain_file('/etc/beegfs/mgmtd.itf')
+        .with(
+          'ensure'  => 'present',
+          'owner'   => user,
+          'group'   => group,
+          'mode'    => '0644'
+        ).with_content(/ib0/)
     end
 
 

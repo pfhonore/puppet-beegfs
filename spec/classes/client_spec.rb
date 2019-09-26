@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'beegfs::client' do
@@ -23,7 +25,7 @@ describe 'beegfs::client' do
 
   let(:params) do
     {
-    :user  => user,
+      :user  => user,
     :group => group,
     }
   end
@@ -73,21 +75,23 @@ describe 'beegfs::client' do
     end
 
     it do
-      is_expected.to contain_concat('/etc/beegfs/beegfs-mounts.conf').with({
-      'ensure'  => 'present',
-      'owner'   => user,
-      'group'   => group,
-      'mode'    => '0644'
-    })
+      is_expected.to contain_concat('/etc/beegfs/beegfs-mounts.conf')
+        .with(
+          'ensure'  => 'present',
+          'owner'   => user,
+          'group'   => group,
+          'mode'    => '0644'
+        )
     end
 
     it do
-      is_expected.to contain_file('/etc/beegfs/beegfs-client.conf').with({
-      'ensure'  => 'present',
+      is_expected.to contain_file('/etc/beegfs/beegfs-client.conf')
+        .with({
+                'ensure'  => 'present',
       'owner'   => user,
       'group'   => group,
       'mode'    => '0644',
-    })
+              })
     end
 
     it {
@@ -99,7 +103,6 @@ describe 'beegfs::client' do
         'include'  => { 'src' => false, 'deb' => true }
       )
     }
-
   end
 
   context 'on debian-like system' do
@@ -129,21 +132,23 @@ describe 'beegfs::client' do
 
     let(:params) do
       {
-      :kernel_ensure => '12.036+nmu3'
-    }
+        :kernel_ensure => '12.036+nmu3'
+      }
     end
 
     # kernel packages have different versions than beegfs
     it do
-      is_expected.to contain_package('kernel-devel').with({
-      'ensure' => '12.036+nmu3'
-    })
+      is_expected.to contain_package('kernel-devel')
+        .with(
+          'ensure' => '12.036+nmu3'
+        )
     end
 
     it do
-      is_expected.to contain_yumrepo('beegfs_rhel6').with({
-      'ensure' => 'present'
-    })
+      is_expected.to contain_yumrepo('beegfs_rhel6')
+        .with(
+          'ensure' => 'present'
+        )
     end
   end
 
@@ -151,58 +156,64 @@ describe 'beegfs::client' do
     let(:version) { '2012.10.r8.debian7' }
     let(:params) do
       {
-      :package_ensure => version
-    }
+        :package_ensure => version
+      }
     end
 
     it do
-      is_expected.to contain_package('beegfs-client').with({
-      'ensure' => version
-    })
+      is_expected.to contain_package('beegfs-client')
+        .with(
+          'ensure' => version
+        )
     end
     it do
-      is_expected.to contain_package('linux-headers-amd64').with({
-      'ensure' => 'present'
-    })
+      is_expected.to contain_package('linux-headers-amd64')
+        .with(
+          'ensure' => 'present'
+        )
     end
     it do
-      is_expected.to contain_package('beegfs-helperd').with({
-      'ensure' => version
-    })
+      is_expected.to contain_package('beegfs-helperd')
+        .with(
+          'ensure' => version
+        )
     end
     it do
-      is_expected.to contain_package('beegfs-client').with({
-      'ensure' => version
-    })
+      is_expected.to contain_package('beegfs-client')
+        .with(
+          'ensure' => version
+        )
     end
   end
 
   it do
-    is_expected.to contain_file('/etc/beegfs/interfaces.client').with({
-    'ensure'  => 'present',
+    is_expected.to contain_file('/etc/beegfs/interfaces.client')
+      .with(
+        'ensure'  => 'present',
     'owner'   => user,
     'group'   => group,
-    'mode'    => '0644',
-  }).with_content(/eth0/)
+    'mode'    => '0644'
+      ).with_content(/eth0/)
   end
 
   context 'interfaces file' do
     let(:params) do
       {
-      :interfaces      => ['eth0', 'ib0'],
+        :interfaces      => ['eth0', 'ib0'],
       :interfaces_file => '/etc/beegfs/client.itf',
       :user            => user,
       :group           => group,
-    }
+      }
     end
 
     it do
-      is_expected.to contain_file('/etc/beegfs/client.itf').with({
-      'ensure'  => 'present',
+      is_expected.to contain_file('/etc/beegfs/client.itf')
+        .with(
+          'ensure'  => 'present',
       'owner'   => user,
       'group'   => group,
-      'mode'    => '0644',
-    }).with_content(/ib0/)
+      'mode'    => '0644'
+        ).with_content(/ib0/)
     end
 
 
@@ -222,8 +233,8 @@ describe 'beegfs::client' do
   context 'changing log level' do
     let(:params) do
       {
-      :log_level => 5,
-    }
+        :log_level => 5,
+      }
     end
 
     it do
@@ -236,8 +247,8 @@ describe 'beegfs::client' do
   context 'allow changing mgmtd_host' do
     let(:params) do
       {
-      :mgmtd_host => '192.168.1.1',
-    }
+        :mgmtd_host => '192.168.1.1',
+      }
     end
 
     it do
@@ -250,9 +261,9 @@ describe 'beegfs::client' do
   context 'allow changing mgmtd port' do
     let(:params) do
       {
-      :mgmtd_tcp_port => 1010,
+        :mgmtd_tcp_port => 1010,
       :mgmtd_udp_port => 1011,
-    }
+      }
     end
 
     it do
@@ -271,9 +282,9 @@ describe 'beegfs::client' do
   context 'allow changing client ports' do
     let(:params) do
       {
-      :client_udp_port  => 8010,
-      :helperd_tcp_port => 8011,
-    }
+        :client_udp_port  => 8010,
+        :helperd_tcp_port => 8011,
+      }
     end
 
     it do
@@ -293,9 +304,9 @@ describe 'beegfs::client' do
   context 'disable autobuild' do
     let(:params) do
       {
-      :autobuild      => false,
-      :autobuild_args => '-j16',
-    }
+        :autobuild      => false,
+        :autobuild_args => '-j16',
+      }
     end
 
     it do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'beegfs::meta' do
@@ -22,9 +24,9 @@ describe 'beegfs::meta' do
 
   let(:params) do
     {
-    :user  => user,
-    :group => group,
-  }
+      :user  => user,
+      :group => group,
+    }
   end
 
   it { is_expected.to contain_class('beegfs::meta') }
@@ -66,12 +68,13 @@ describe 'beegfs::meta' do
     end
 
     it do
-      is_expected.to contain_file('/etc/beegfs/beegfs-meta.conf').with({
-      'ensure'  => 'present',
-      'owner'   => user,
-      'group'   => group,
-      'mode'    => '0644',
-    })
+      is_expected.to contain_file('/etc/beegfs/beegfs-meta.conf')
+        .with(
+          'ensure'  => 'present',
+          'owner'   => user,
+          'group'   => group,
+          'mode'    => '0644'
+        )
     end
   end
 
@@ -84,7 +87,6 @@ describe 'beegfs::meta' do
   end
 
   shared_examples 'beegfs-version' do |release|
-
     let :pre_condition do
       "class {'beegfs':
          release => '#{release}',
@@ -94,8 +96,8 @@ describe 'beegfs::meta' do
     context 'allow changing parameters' do
       let(:params) do
         {
-        :mgmtd_host => '192.168.1.1',
-      }
+          :mgmtd_host => '192.168.1.1',
+        }
       end
 
       it do
@@ -129,38 +131,41 @@ describe 'beegfs::meta' do
       end
 
       it do
-        is_expected.to contain_package('beegfs-meta').with({
-        'ensure' => version
-      })
+        is_expected.to contain_package('beegfs-meta')
+          .with(
+            'ensure' => version
+          )
       end
     end
 
     it do
-      is_expected.to contain_file('/etc/beegfs/interfaces.meta').with({
-      'ensure'  => 'present',
+      is_expected.to contain_file('/etc/beegfs/interfaces.meta')
+        .with(
+          'ensure'  => 'present',
       'owner'   => user,
       'group'   => group,
-      'mode'    => '0644',
-    }).with_content(/eth0/)
+      'mode'    => '0644'
+        ).with_content(/eth0/)
     end
 
     context 'interfaces file' do
       let(:params) do
         {
-        :interfaces      => ['eth0', 'ib0'],
-        :interfaces_file => '/etc/beegfs/meta.itf',
-        :user            => user,
-        :group           => group,
-      }
+          :interfaces      => ['eth0', 'ib0'],
+          :interfaces_file => '/etc/beegfs/meta.itf',
+          :user            => user,
+          :group           => group,
+        }
       end
 
       it do
-        is_expected.to contain_file('/etc/beegfs/meta.itf').with({
-        'ensure'  => 'present',
-        'owner'   => user,
-        'group'   => group,
-        'mode'    => '0644',
-      }).with_content(/ib0/)
+        is_expected.to contain_file('/etc/beegfs/meta.itf')
+          .with(
+            'ensure'  => 'present',
+            'owner'   => user,
+            'group'   => group,
+            'mode'    => '0644'
+          ).with_content(/ib0/)
       end
 
 
@@ -244,5 +249,4 @@ describe 'beegfs::meta' do
       )
     }
   end
-
 end

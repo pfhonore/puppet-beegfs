@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'beegfs' do
   context 'supported operating systems' do
      {
-        'centos-6' => {
-          :osfamily => 'RedHat',
-          :os => {
-            :family => 'RedHat',
-            :name => 'Centos',
-            :architecture => 'amd64',
-            :release => { :major => '6', :minor => '2', :full => '6.2' },
-          },
-        },
+       'centos-6' => {
+         :osfamily => 'RedHat',
+         :os => {
+           :family => 'RedHat',
+           :name => 'Centos',
+           :architecture => 'amd64',
+           :release => { :major => '6', :minor => '2', :full => '6.2' },
+         },
+       },
         'ubuntu-14.04' => {
           :osfamily => 'Debian',
           :os => {
@@ -22,7 +24,7 @@ describe 'beegfs' do
             :release => { :major => '14', :minor => '04', :full => '14.04' },
           },
         },
-      }.each do |os, facts|
+     }.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
           facts
@@ -57,5 +59,4 @@ describe 'beegfs' do
       it { expect { is_expected.to contain_package('beegfs') }.to raise_error(Puppet::Error, /Nexenta is not supported/) }
     end
   end
-
 end

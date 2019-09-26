@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'rubygems'
 require 'bundler/setup'
 
@@ -51,15 +52,15 @@ task :contributors do
 end
 
 desc "Run syntax, lint, and spec tests."
-task :test => [
-  :metadata_lint,
-  :syntax,
-  :lint,
-  :spec,
+task :test => %i[
+  metadata_lint
+  syntax
+  lint
+  spec
 ]
 
 task :librarian_spec_prep do
   sh 'librarian-puppet install --path=spec/fixtures/modules/'
 end
 task :spec_prep => :librarian_spec_prep
-task :default => [:validate, :spec, :lint]
+task :default => %i[validate spec lint]

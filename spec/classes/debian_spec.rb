@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 # test client installation on Debian systems
 
@@ -23,7 +25,6 @@ describe 'beegfs::client' do
   let(:release) { '7.1' }
 
   context 'install apt repository and all required packages' do
-
     let(:params) do
       {
         :user  => user,
@@ -48,24 +49,28 @@ describe 'beegfs::client' do
     }
 
     it do
-      is_expected.to contain_package('beegfs-client').with({
-      'ensure' => 'present'
-    })
+      is_expected.to contain_package('beegfs-client')
+        .with(
+          'ensure' => 'present'
+        )
     end
     it do
-      is_expected.to contain_package('linux-headers-amd64').with({
-      'ensure' => 'present'
-    })
+      is_expected.to contain_package('linux-headers-amd64')
+        .with(
+          'ensure' => 'present'
+        )
     end
     it do
-      is_expected.to contain_package('beegfs-helperd').with({
-      'ensure' => 'present'
-    })
+      is_expected.to contain_package('beegfs-helperd')
+        .with(
+          'ensure' => 'present'
+        )
     end
     it do
-      is_expected.to contain_package('beegfs-client').with({
-      'ensure' => 'present'
-    })
+      is_expected.to contain_package('beegfs-client')
+        .with(
+          'ensure' => 'present'
+        )
     end
   end
 
