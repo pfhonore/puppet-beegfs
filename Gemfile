@@ -28,7 +28,7 @@ end
 group :development do
   gem "travis"
   gem "travis-lint"
-  gem "puppet-blacksmith"
+  gem 'puppet-blacksmith', git: 'https://github.com/deric/puppet-blacksmith', branch: 'tag-order'
   gem "guard-rake"
   # CVE-2017-8418
   gem "rubocop", ">= 0.70.0"
