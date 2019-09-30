@@ -6,6 +6,7 @@
 
 - `beegfs::storage_directory` expects an Array instead of just String
 - parameter `beegfs::major_version` renamed to `beegfs::release`
+- `beegfs::client::client_udp` renamed to `beegfs::client::client_udp_port`
 
 ### Changes
 
