@@ -49,6 +49,7 @@ class beegfs::client (
     group   => $group,
     mode    => '0644',
     content => template('beegfs/interfaces.erb'),
+    require => Package['beegfs-client'],
   }
 
   file { '/etc/beegfs/beegfs-client.conf':
