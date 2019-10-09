@@ -35,15 +35,22 @@ class beegfs::repo::debian (
               $_os_release = 'deb8'
             }
             '16.04','16.10','17.04','17.10':{
-              $_os_release = 'deb9'
+              $_os_release = 'stretch'
             }
             default: {
-              $_os_release = 'deb9'
+              $_os_release = 'stretch'
             }
           }
         }
         default: {
-          $_os_release = $facts.dig('os', 'distro', 'codename')
+          case $facts.dig('os', 'distro', 'codename') {
+            'buster':{
+              $_os_release = 'stretch'
+            }
+            default: {
+              $_os_release = $facts.dig('os', 'distro', 'codename')
+            }
+          }
         }
       }
     }
