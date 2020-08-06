@@ -26,11 +26,11 @@ class beegfs::params {
             'jessie': {
               $release = 'deb8'
             }
-            'stretch': {
+            'stretch','buster': { # no buster release yet
               $release = 'deb9'
             }
             default: {
-              $release = 'deb8'
+              $release = 'deb9'
             }
           }
         }
