@@ -25,13 +25,13 @@ class beegfs::mgmtd (
   Boolean              $allow_new_targets             = $beegfs::allow_new_targets,
   Stdlib::Port         $mgmtd_tcp_port                = $beegfs::mgmtd_tcp_port,
   Stdlib::Port         $mgmtd_udp_port                = $beegfs::mgmtd_udp_port,
-) inherits ::beegfs {
+) inherits beegfs {
 
   $_release_major = beegfs::release_to_major($beegfs::release)
 
   package { 'beegfs-mgmtd':
     ensure  => $package_ensure,
-    require => Anchor['::beegfs::install::completed'],
+    require => Anchor['beegfs::install::completed'],
   }
 
   # mgmtd main directory

@@ -14,14 +14,14 @@ class beegfs::repo(
 
   case $facts['os']['family'] {
     'Debian': {
-      class { '::beegfs::repo::debian':
+      class { 'beegfs::repo::debian':
         release => $release,
         require => Anchor['beegfs::repo::begin'],
         before  => Anchor['beegfs::repo::end'],
       }
     }
     'RedHat': {
-      class { '::beegfs::repo::redhat':
+      class { 'beegfs::repo::redhat':
         require => Anchor['beegfs::repo::begin'],
         before  => Anchor['beegfs::repo::end'],
       }

@@ -8,7 +8,7 @@ class beegfs::repo::debian (
 
   anchor { 'beegfs::apt_repo' : }
 
-  include ::apt
+  include apt
 
   # If using the old version pattern the release folder is the same as the major
   # version; if using the new pattern we need to replace dots (`.`) with underscore

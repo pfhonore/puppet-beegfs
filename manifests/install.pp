@@ -12,7 +12,7 @@ class beegfs::install(
   Beegfs::Release       $release        = $beegfs::release,
 ) {
 
-  class {'::beegfs::repo':
+  class {'beegfs::repo':
     manage_repo    => $manage_repo,
     package_source => $package_source,
     release        => $release,

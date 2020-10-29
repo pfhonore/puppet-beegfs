@@ -21,11 +21,11 @@ class beegfs::meta (
   Stdlib::Port         $mgmtd_tcp_port       = $beegfs::mgmtd_tcp_port,
   Stdlib::Port         $mgmtd_udp_port       = $beegfs::mgmtd_udp_port,
 
-) inherits ::beegfs {
+) inherits beegfs {
 
   package { 'beegfs-meta':
     ensure  => $package_ensure,
-    require => Anchor['::beegfs::install::completed'],
+    require => Anchor['beegfs::install::completed'],
   }
 
   $_release_major = beegfs::release_to_major($beegfs::release)

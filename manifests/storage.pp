@@ -18,7 +18,7 @@ class beegfs::storage (
   Stdlib::Port                $mgmtd_tcp_port       = 8008,
   Stdlib::Port                $mgmtd_udp_port       = 8008,
   Boolean                     $enable_quota         = $beegfs::enable_quota,
-) inherits ::beegfs {
+) inherits beegfs {
 
   $_release_major = beegfs::release_to_major($beegfs::release)
 
@@ -31,7 +31,7 @@ class beegfs::storage (
 
   package { 'beegfs-storage':
     ensure  => $package_ensure,
-    require => Anchor['::beegfs::install::completed'],
+    require => Anchor['beegfs::install::completed'],
   }
 
   file { $interfaces_file:
