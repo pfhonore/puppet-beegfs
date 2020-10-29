@@ -37,7 +37,7 @@ connMgmtdPortTCP             = <%= @mgmtd_tcp_port %>
 connMgmtdPortUDP             = <%= @mgmtd_udp_port %>
 connPortShift                = 0
 
-connNetFilterFile            =
+connNetFilterFile            = <% if @networks %><%= @networks_file %><% end %>
 
 connUseRDMA                  = true
 connRDMATypeOfService        = 0
