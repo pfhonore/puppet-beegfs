@@ -53,8 +53,13 @@ class beegfs::mgmtd (
     require => Package['beegfs-mgmtd'],
   }
 
+  $network_ensure = $networks ? {
+    undef => absent,
+    default => present
+  }
+
   file { $networks_file:
-    ensure => $networks ? { undef => absent, default => present },
+    ensure  => $network_ensure,
     owner   => $user,
     group   => $group,
     mode    => '0644',
