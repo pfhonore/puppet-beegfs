@@ -36,7 +36,7 @@ connAuthFile                 =
 connFallbackExpirationSecs   = 900
 connMaxInternodeNum          = 3
 connInterfacesFile           =
-connNetFilterFile            =
+connNetFilterFile            = <% if @networks %><%= @networks_file %><% end %>
 connTcpOnlyFilterFile        =
 
 logType                      = <%= @log_type %>

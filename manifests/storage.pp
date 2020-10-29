@@ -15,6 +15,8 @@ class beegfs::storage (
                               $package_ensure       = $beegfs::package_ensure,
   Array[String]               $interfaces           = ['eth0'],
   Stdlib::AbsolutePath        $interfaces_file      = '/etc/beegfs/interfaces.storage',
+  Optional[Array[String]]     $networks             = undef,
+  Stdlib::AbsolutePath        $networks_file        = '/etc/beegfs/networks.storage',
   Stdlib::Port                $mgmtd_tcp_port       = 8008,
   Stdlib::Port                $mgmtd_udp_port       = 8008,
   Boolean                     $enable_quota         = $beegfs::enable_quota,
@@ -43,6 +45,15 @@ class beegfs::storage (
     require => Package['beegfs-storage'],
   }
 
+  file { $networks_file:
+    ensure => $networks ? { undef => absent, default => present },
+    owner   => $user,
+    group   => $group,
+    mode    => '0644',
+    content => template('beegfs/networks.erb'),
+    require => Package['beegfs-storage'],
+  }
+
   file { '/etc/beegfs/beegfs-storage.conf':
     ensure  => present,
     owner   => $user,
@@ -51,6 +62,7 @@ class beegfs::storage (
     content => template("beegfs/${_release_major}/beegfs-storage.conf.erb"),
     require => [
       File[$interfaces_file],
+      File[$networks_file],
       Package['beegfs-storage'],
     ],
   }
@@ -64,6 +76,7 @@ class beegfs::storage (
     subscribe  => [
       File['/etc/beegfs/beegfs-storage.conf'],
       File[$interfaces_file],
+      File[$networks_file],
     ],
   }
 }

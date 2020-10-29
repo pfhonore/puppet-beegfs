@@ -57,9 +57,9 @@ beegfs::mount{ 'mnt-share':
 }
 ```
 
-### Interfaces
+### Interfaces and networks
 
-For meta and storage nodes you can specify interfaces for commutication. The passed argument must be an array.
+For meta and storage nodes you can specify interfaces for communication. The passed argument must be an array.
 
 ```puppet
 class { 'beegfs::meta':
@@ -69,6 +69,17 @@ class { 'beegfs::meta':
 class { 'beegfs::storage':
   mgmtd_host => 192.168.1.1,
   interfaces => ['eth0', 'ib0']
+}
+```
+
+In some cases, interfaces can have multiple ips, and only a subset of them should be used. 
+In this case, the list of allowed subnets can be passed as the networks parameter. It should be an array if specified.
+
+```puppet
+class { 'beegfs::meta':
+  mgmtd_host => 192.168.1.1,
+  interfaces => ['eth0', 'ib0'],
+  networks => ['192.168.1.0/24'],
 }
 ```
 
