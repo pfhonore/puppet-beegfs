@@ -9,6 +9,8 @@ class beegfs::client (
                           $kernel_ensure            = present,
   Array[String]           $interfaces               = ['eth0'],
   Stdlib::AbsolutePath    $interfaces_file          = '/etc/beegfs/interfaces.client',
+  Optional[Array[String]] $networks                 = undef,
+  Stdlib::AbsolutePath    $networks_file            = '/etc/beegfs/networks.client',
   Beegfs::Client::LogType $log_type                 = 'helperd',
   Beegfs::LogLevel        $log_level                = $beegfs::log_level,
   Beegfs::LogDir          $log_dir                  = $beegfs::log_dir,
@@ -52,6 +54,15 @@ class beegfs::client (
     require => Package['beegfs-client'],
   }
 
+  file { $networks_file:
+    ensure => $networks ? { undef => absent, default => present },
+    owner   => $user,
+    group   => $group,
+    mode    => '0644',
+    content => template('beegfs/networks.erb'),
+    require => Package['beegfs-client'],
+  }
+
   file { '/etc/beegfs/beegfs-client.conf':
     ensure  => present,
     owner   => $user,
@@ -59,7 +70,8 @@ class beegfs::client (
     mode    => '0644',
     require =>[
       Package['beegfs-utils'],
-      File[$interfaces_file]
+      File[$interfaces_file],
+      File[$networks_file],
     ],
     content => template("beegfs/${_release_major}/beegfs-client.conf.erb"),
   }
@@ -111,6 +123,7 @@ class beegfs::client (
     require    => [ Package['beegfs-client'],
       Service['beegfs-helperd'],
       File[$interfaces_file],
+      File[$networks_file],
     ],
     subscribe  => [
       Concat['/etc/beegfs/beegfs-mounts.conf'],
@@ -118,6 +131,7 @@ class beegfs::client (
       File['/etc/beegfs/beegfs-helperd.conf'],
       Exec['/etc/init.d/beegfs-client rebuild'],
       File[$interfaces_file],
+      File[$networks_file],
     ],
   }
 }

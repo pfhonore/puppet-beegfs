@@ -34,7 +34,7 @@ connFallbackExpirationSecs    = 900
 connInterfacesFile            = <%= @interfaces_file %>
 connMaxInternodeNum           = 12
 connMaxConcurrentAttempts     = 0
-connNetFilterFile             =
+connNetFilterFile             = <% if @networks %><%= @networks_file %><% end %>
 
 connUseRDMA                   = true
 connRDMABufNum                = 70

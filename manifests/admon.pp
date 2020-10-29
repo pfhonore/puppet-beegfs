@@ -3,30 +3,32 @@
 # This module manages beegfs admon
 #
 class beegfs::admon (
-  Boolean              $enable                   = true,
-  String               $user                     = $beegfs::user,
-  String               $group                    = $beegfs::group,
-  $package_ensure                                = $beegfs::package_ensure,
-  $kernel_ensure                                 = present,
-  Array[String]        $interfaces               = ['eth0'],
-  Stdlib::AbsolutePath $interfaces_file          = '/etc/beegfs/interfaces.admon',
-  Beegfs::LogDir       $log_dir                  = $beegfs::log_dir,
-  Beegfs::LogType      $log_type                 = $beegfs::log_type,
-  Beegfs::LogLevel     $log_level                = $beegfs::log_level,
-  Stdlib::Host         $mgmtd_host               = lookup('beegfs::mgmtd_host', String, undef, $beegfs::mgmtd_host),
-  Stdlib::Port         $admon_http_port          = $beegfs::admon_http_port,
-  Stdlib::Port         $admon_udp_port           = $beegfs::admon_udp_port,
-  Stdlib::Port         $client_udp_port          = $beegfs::client_udp_port,
-  Stdlib::Port         $helperd_tcp_port         = $beegfs::helperd_tcp_port,
-  Stdlib::Port         $mgmtd_tcp_port           = $beegfs::mgmtd_tcp_port,
-  Stdlib::Port         $mgmtd_udp_port           = $beegfs::mgmtd_udp_port,
-  Array[String]        $kernel_packages          = $beegfs::params::kernel_packages,
-  Boolean              $autobuild                = true,
-  String               $autobuild_args           = '-j8',
-  Boolean              $tune_refresh_on_get_attr = false,
-  Boolean              $enable_quota             = $beegfs::enable_quota,
-  Boolean              $enable_acl               = $beegfs::enable_acl,
-  Stdlib::AbsolutePath $admon_db_file            = $beegfs::admon_db_file,
+  Boolean                 $enable                   = true,
+  String                  $user                     = $beegfs::user,
+  String                  $group                    = $beegfs::group,
+  $package_ensure                                   = $beegfs::package_ensure,
+  $kernel_ensure                                    = present,
+  Array[String]           $interfaces               = ['eth0'],
+  Stdlib::AbsolutePath    $interfaces_file          = '/etc/beegfs/interfaces.admon',
+  Optional[Array[String]] $networks                 = undef,
+  Stdlib::AbsolutePath    $networks_file            = '/etc/beegfs/networks.admon',
+  Beegfs::LogDir          $log_dir                  = $beegfs::log_dir,
+  Beegfs::LogType         $log_type                 = $beegfs::log_type,
+  Beegfs::LogLevel        $log_level                = $beegfs::log_level,
+  Stdlib::Host            $mgmtd_host               = lookup('beegfs::mgmtd_host', String, undef, $beegfs::mgmtd_host),
+  Stdlib::Port            $admon_http_port          = $beegfs::admon_http_port,
+  Stdlib::Port            $admon_udp_port           = $beegfs::admon_udp_port,
+  Stdlib::Port            $client_udp_port          = $beegfs::client_udp_port,
+  Stdlib::Port            $helperd_tcp_port         = $beegfs::helperd_tcp_port,
+  Stdlib::Port            $mgmtd_tcp_port           = $beegfs::mgmtd_tcp_port,
+  Stdlib::Port            $mgmtd_udp_port           = $beegfs::mgmtd_udp_port,
+  Array[String]           $kernel_packages          = $beegfs::params::kernel_packages,
+  Boolean                 $autobuild                = true,
+  String                  $autobuild_args           = '-j8',
+  Boolean                 $tune_refresh_on_get_attr = false,
+  Boolean                 $enable_quota             = $beegfs::enable_quota,
+  Boolean                 $enable_acl               = $beegfs::enable_acl,
+  Stdlib::AbsolutePath    $admon_db_file            = $beegfs::admon_db_file,
 ) inherits beegfs {
 
   $_release_major = beegfs::release_to_major($beegfs::release)
@@ -42,6 +44,16 @@ class beegfs::admon (
     group   => $group,
     mode    => '0644',
     content => template('beegfs/interfaces.erb'),
+    require => Package['beegfs-admon'],
+  }
+
+  file { $networks_file:
+    ensure => $networks ? { undef => absent, default => present },
+    owner   => $user,
+    group   => $group,
+    mode    => '0644',
+    content => template('beegfs/networks.erb'),
+    require => Package['beegfs-admon'],
   }
 
   file { '/etc/beegfs/beegfs-admon.conf':
@@ -52,6 +64,7 @@ class beegfs::admon (
     require => [
       Package['beegfs-mgmtd'],
       File[$interfaces_file],
+      File[$networks_file],
     ],
   }
 
@@ -63,10 +76,12 @@ class beegfs::admon (
     require    => [
       Package['beegfs-admon'],
       File[$interfaces_file],
+      File[$networks_file],
     ],
     subscribe  => [
       File['/etc/beegfs/beegfs-admon.conf'],
       File[$interfaces_file],
+      File[$networks_file],
     ],
   }
 

@@ -31,7 +31,7 @@ connBacklogTCP                         = 128
 connInterfacesFile                     = <%= @interfaces_file %>
 connMgmtdPortTCP                       = <%= @mgmtd_tcp_port %>
 connMgmtdPortUDP                       = <%= @mgmtd_udp_port %>
-connNetFilterFile                      =
+connNetFilterFile                      = <% if @networks %><%= @networks_file %><% end %>
 connPortShift                          = 0
 
 logType                                = <%= @log_type %>
