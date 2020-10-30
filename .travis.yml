@@ -4,33 +4,44 @@ dist: xenial
 language: ruby
 bundler_args: --without development system_tests
 rvm:
-  - 2.3.3
-  - 2.5.5
+  - 2.5.8
 script: RAKE_ENV=ci bundle exec rake test
 cache:
   - bundler
 
-env:
-  jobs:
-    - PUPPET_VERSION="~> 4.9.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 4.10.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 5.0.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 5.5.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 6.0" STRICT_VARIABLES=yes
+stages:
+  - static
+  - spec
+  - acceptance
+
 jobs:
   include:
-    - rvm: 2.3.3
+    -
+      env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file syntax lint metadata_lint"
+      stage: static
+    -
+      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+      rvm: 2.4.5
+      stage: spec
+    -
+      env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
+      rvm: 2.5.8
+      stage: spec
+    -
+      rvm: 2.3.3
       dist: xenial
       env: RAKE_ENV=ci BEAKER_debug=true BEAKER_set=debian9-5.5
       bundler_args: --without development
       script: bundle exec rake acceptance
       services: docker
+      stage: acceptance
     - rvm: 2.3.3
       dist: xenial
       env: RAKE_ENV=ci BEAKER_debug=true BEAKER_set=debian9-6.3
       bundler_args: --without development
       script: bundle exec rake acceptance
       services: docker
+      stage: acceptance
   allow_failures:
     - rvm: 2.3.3
       env: RAKE_ENV=ci BEAKER_debug=true BEAKER_set=debian9-6.3
