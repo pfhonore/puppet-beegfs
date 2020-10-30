@@ -2,7 +2,7 @@
 os: linux
 dist: xenial
 language: ruby
-bundler_args: --without development system_tests
+bundler_args: --without development
 rvm:
   - 2.5.8
 script: RAKE_ENV=ci bundle exec rake test
