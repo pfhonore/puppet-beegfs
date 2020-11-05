@@ -16,7 +16,7 @@ class beegfs::repo::debian (
   $_release = if $release =~ /^\d{4}/ {
     $release
   } else {
-    $release.regsubst('\.', '_')
+    $release.regsubst('\.', '.')
   }
 
   case $release {
